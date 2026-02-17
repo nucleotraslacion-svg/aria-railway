@@ -2,10 +2,25 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
 const ariaRoutes = require('./api/routes/aria.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiting configuration
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+
+// Apply rate limiting to API routes
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // Limit each IP to 30 requests per minute
+  message: 'Too many API requests, please slow down.'
+});
 
 // Middleware
 app.use(cors());
@@ -19,8 +34,8 @@ const frontendPublicPath = path.join(__dirname, '../frontend/public');
 app.use(express.static(frontendBuildPath));
 app.use(express.static(frontendPublicPath));
 
-// API Routes
-app.use('/api/aria', ariaRoutes);
+// API Routes with rate limiting
+app.use('/api/aria', apiLimiter, ariaRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -29,7 +44,8 @@ app.get('/health', (req, res) => {
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
+// Apply general rate limiting to prevent abuse
+app.get('*', limiter, (req, res) => {
   const buildIndexPath = path.join(frontendBuildPath, 'index.html');
   const publicIndexPath = path.join(frontendPublicPath, 'index.html');
   
