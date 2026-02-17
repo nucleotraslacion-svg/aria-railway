@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api/aria';
+const API_URL = process.env.REACT_APP_API_URL || '/api/aria';
 
 class APIService {
   async talk(message) {
@@ -30,4 +30,5 @@ class APIService {
   }
 }
 
-export default new APIService();
+const apiService = new APIService();
+export default apiService;
