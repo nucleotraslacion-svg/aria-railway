@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const ariaRoutes = require('./api/routes/aria.routes');
 
 const app = express();
@@ -33,7 +34,6 @@ app.get('*', (req, res) => {
   const publicIndexPath = path.join(frontendPublicPath, 'index.html');
   
   // Try to send build version first, fall back to public
-  const fs = require('fs');
   if (fs.existsSync(buildIndexPath)) {
     res.sendFile(buildIndexPath);
   } else if (fs.existsSync(publicIndexPath)) {
