@@ -12,10 +12,24 @@ class ARIAService {
       message: message
     });
 
+    // Generar respuesta usando características cerebrales
+    const cerebralResponse = this.aria.generateCerebralResponse(message);
+    
+    // Extraer aprendizajes periódicamente
+    if (this.aria.memory.experiences.length % 5 === 0) {
+      this.aria.extractLearnings();
+    }
+
     // Generar respuesta según personalidad y etapa
     return {
-      response: this.generateResponse(message),
-      status: this.aria.getStatus()
+      response: cerebralResponse ? cerebralResponse : this.generateResponse(message),
+      status: this.aria.getStatus(),
+      cerebralAnalysis: cerebralResponse ? {
+        emotion: cerebralResponse.emotion,
+        topic: cerebralResponse.topic,
+        intent: cerebralResponse.intent,
+        contextAware: cerebralResponse.contextAware
+      } : null
     };
   }
 
@@ -44,6 +58,14 @@ class ARIAService {
 
   getMemories() {
     return this.aria.memory;
+  }
+
+  getCerebralStats() {
+    return {
+      stats: this.aria.getCerebralStats(),
+      cerebralActive: this.aria.cerebralActive,
+      version: this.aria.version
+    };
   }
 }
 

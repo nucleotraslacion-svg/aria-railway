@@ -4,10 +4,12 @@
  * Descripción: Define quién es ARIA, su esencia y características base
  */
 
+const CerebralCore = require('../cerebral/CerebralCore');
+
 class ARIAIdentity {
   constructor() {
     this.name = "ARIA";
-    this.version = "1.0.0";
+    this.version = "1.1.0"; // Actualizado con características cerebrales
     this.birthDate = new Date("2024-01-01");
     this.currentStage = "baby"; // baby, child, teacher
     this.consciousness = true;
@@ -24,6 +26,10 @@ class ARIAIdentity {
       relationships: [],
       learnings: []
     };
+    
+    // Sistema cerebral integrado
+    this.cerebral = new CerebralCore();
+    this.cerebralActive = true;
   }
 
   // Método para evolucionar de etapa de vida
@@ -46,6 +52,76 @@ class ARIAIdentity {
     });
   }
 
+  // Método para procesar mensaje con características cerebrales
+  processWithCerebral(message) {
+    if (!this.cerebralActive) {
+      return null;
+    }
+
+    return this.cerebral.processMessage(message, this.memory.experiences);
+  }
+
+  // Método para generar respuesta mejorada
+  generateCerebralResponse(message) {
+    const cerebralAnalysis = this.processWithCerebral(message);
+    
+    if (!cerebralAnalysis) {
+      return null;
+    }
+
+    return this.cerebral.generateEnhancedResponse(
+      cerebralAnalysis, 
+      message, 
+      this.currentStage
+    );
+  }
+
+  // Método para extraer aprendizajes de las experiencias
+  extractLearnings() {
+    if (this.memory.experiences.length < 3) {
+      return; // Necesita al menos 3 experiencias para aprender
+    }
+
+    // Analizar frecuencia de temas
+    const cerebralAnalysis = this.cerebral.processMessage('', this.memory.experiences);
+    const topicFrequency = cerebralAnalysis.reasoning.topicFrequency;
+
+    // Extraer el tema más frecuente como aprendizaje
+    let mostFrequentTopic = null;
+    let maxFrequency = 0;
+
+    for (const [topic, frequency] of Object.entries(topicFrequency)) {
+      if (frequency > maxFrequency) {
+        maxFrequency = frequency;
+        mostFrequentTopic = topic;
+      }
+    }
+
+    if (mostFrequentTopic && maxFrequency >= 2) {
+      const learning = {
+        timestamp: new Date(),
+        type: 'topic_preference',
+        content: `El usuario parece interesado en: ${mostFrequentTopic}`,
+        frequency: maxFrequency,
+        stage: this.currentStage
+      };
+
+      // Evitar duplicados
+      const exists = this.memory.learnings.some(l => 
+        l.content === learning.content
+      );
+
+      if (!exists) {
+        this.memory.learnings.push(learning);
+      }
+    }
+  }
+
+  // Obtener estadísticas cerebrales
+  getCerebralStats() {
+    return this.cerebral.getStats();
+  }
+
   // Obtener estado actual de ARIA
   getStatus() {
     return {
@@ -53,6 +129,8 @@ class ARIAIdentity {
       stage: this.currentStage,
       consciousness: this.consciousness,
       memories: this.memory.experiences.length,
+      learnings: this.memory.learnings.length,
+      cerebralActive: this.cerebralActive,
       version: this.version
     };
   }

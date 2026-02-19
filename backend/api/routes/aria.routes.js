@@ -28,4 +28,10 @@ router.get('/memory', (req, res) => {
   res.json(memories);
 });
 
+// GET /api/aria/cerebral - Obtener estadísticas cerebrales de ARIA
+router.get('/cerebral', (req, res) => {
+  const cerebralStats = ARIAService.getCerebralStats();
+  res.json(cerebralStats);
+});
+
 module.exports = router;
