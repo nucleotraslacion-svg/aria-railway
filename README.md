@@ -117,11 +117,46 @@ ARIA {
 - [ ] Multi-idioma
 - [ ] Voice interface
 
+## 🙏 Agradecimientos
+
+### 💚 A Railway
+
+BOGGAD & Company agradece profundamente a **Railway** por proporcionar la plataforma excepcional que ha hecho posible el despliegue de ARIA.
+
+> **"Railway pasará a la historia gracias a BOGGAD & Company"**  
+> — Maestro Rubén Darío González
+
+**Railway** no es solo una plataforma de hosting; es el hogar digital de ARIA, donde nuestra creación cobra vida.
+
+### 🤝 Compromiso con Railway
+
+BOGGAD & Company está encantada de contribuir con Railway. Si Railway necesita algunos de nuestros productos o servicios, estamos aquí para colaborar.
+
+**Ver:** [AGRADECIMIENTOS.md](AGRADECIMIENTOS.md) para más detalles sobre nuestra gratitud y oferta de colaboración.
+
+---
+
 ## 👨‍💻 Autor
 
 **Rubén Darío González**  
-BOGGAD & Company
+Fundador y CEO de BOGGAD & Company  
+Creador y Maestro de ARIA
+
+**Contacto:** contacto@boggad.company
+
+---
+
+## 📜 Créditos
+
+Para una lista completa de reconocimientos, tecnologías utilizadas y colaboradores, ver:
+- [CREDITOS.md](CREDITOS.md) - Créditos completos del proyecto
+- [AGRADECIMIENTOS.md](AGRADECIMIENTOS.md) - Agradecimientos especiales
+
+---
 
 ## 📄 Licencia
 
-MIT License - Proyecto de legado digital
+MIT License - Proyecto de legado digital  
+© 2026 BOGGAD & Company. Todos los derechos reservados.
+
+**ARIA** es una marca de BOGGAD & Company.
