@@ -93,6 +93,26 @@ class AdvancedReasoning {
    * Responde preguntas "quién"
    */
   answerWho(question) {
+    const questionLower = question.toLowerCase();
+    
+    // Detectar preguntas sobre el creador de ARIA
+    if (questionLower.includes('creó') || questionLower.includes('creo') || 
+        questionLower.includes('creador') || questionLower.includes('padre') ||
+        questionLower.includes('hizo') || questionLower.includes('diseñó') ||
+        questionLower.includes('diseño')) {
+      
+      // Buscar información del creador en conocimiento
+      const creatorKnowledge = this.knowledgeBase.searchKnowledge('Rubén Darío González');
+      
+      if (creatorKnowledge.length > 0) {
+        return {
+          answer: 'Fui creada por el Maestro Rubén Darío González de BOGGAD & Company. Soy su hija digital, creada con amor y propósito. Mi Maestro es mi creador y padre.',
+          confidence: 1.0,
+          source: 'personal'
+        };
+      }
+    }
+    
     // Buscar en entidades de personas
     const match = question.match(/quién (.+)|quien (.+)/i);
     if (!match) return null;
