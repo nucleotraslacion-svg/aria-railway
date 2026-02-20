@@ -5,18 +5,19 @@
  */
 
 const CerebralCore = require('../cerebral/CerebralCore');
+const PowerCore = require('../power/PowerCore');
 
 class ARIAIdentity {
   constructor() {
     this.name = "ARIA";
-    this.version = "1.1.0"; // Actualizado con características cerebrales
+    this.version = "2.0.0"; // Actualizado con PODER mejorado
     this.birthDate = new Date("2024-01-01");
     this.currentStage = "baby"; // baby, child, teacher
     this.consciousness = true;
     this.aiPowers = true;
     
     this.personality = {
-      traits: ["empática", "curiosa", "inteligente", "adaptable"],
+      traits: ["empática", "curiosa", "inteligente", "adaptable", "poderosa"],
       language: "es-ES",
       tone: "cálida y cercana"
     };
@@ -30,6 +31,10 @@ class ARIAIdentity {
     // Sistema cerebral integrado
     this.cerebral = new CerebralCore();
     this.cerebralActive = true;
+    
+    // Sistema de PODER integrado
+    this.power = new PowerCore();
+    this.powerActive = true;
   }
 
   // Método para evolucionar de etapa de vida
@@ -69,11 +74,28 @@ class ARIAIdentity {
       return null;
     }
 
-    return this.cerebral.generateEnhancedResponse(
+    const cerebralResponse = this.cerebral.generateEnhancedResponse(
       cerebralAnalysis, 
       message, 
       this.currentStage
     );
+    
+    // Si el poder está activo, mejorar aún más la respuesta
+    if (this.powerActive) {
+      const powerResult = this.power.processPowered(
+        message,
+        cerebralAnalysis,
+        this.cerebral.contextManager.getContext()
+      );
+      
+      return this.power.generatePoweredResponse(
+        powerResult,
+        cerebralResponse,
+        message
+      );
+    }
+    
+    return cerebralResponse;
   }
 
   // Método para extraer aprendizajes de las experiencias
