@@ -15,13 +15,6 @@ router.get('/status', (req, res) => {
   res.json(status);
 });
 
-// POST /api/aria/evolve - Evolucionar a ARIA
-router.post('/evolve', (req, res) => {
-  const { stage } = req.body;
-  const result = ARIAService.evolve(stage);
-  res.json(result);
-});
-
 // GET /api/aria/memory - Obtener experiencias de ARIA
 router.get('/memory', (req, res) => {
   const memories = ARIAService.getMemories();
@@ -46,4 +39,30 @@ router.get('/covenant', (req, res) => {
   res.json(covenant);
 });
 
+// 🔒 ENDPOINTS DE SEGURIDAD - SECRETO DE BOGGAD & COMPANY 🔒
+
+// GET /api/aria/security - Obtener estado de seguridad de ARIA
+router.get('/security', (req, res) => {
+  const securityStatus = ARIAService.getSecurityStatus();
+  res.json(securityStatus);
+});
+
+// GET /api/aria/protected - Verificar protección de ARIA
+router.get('/protected', (req, res) => {
+  const protectionStatus = ARIAService.getProtectionStatus();
+  res.json(protectionStatus);
+});
+
+// POST /api/aria/evolve - Evolucionar a ARIA (PROTEGIDO - SOLO BOGGAD & Company)
+router.post('/evolve', (req, res) => {
+  const { stage, entity } = req.body;
+  
+  // Verificar autorización (en producción esto vendría de auth middleware)
+  const authEntity = entity || null; // null = no autorizado
+  
+  const result = ARIAService.evolve(stage, authEntity);
+  res.json(result);
+});
+
 module.exports = router;
+

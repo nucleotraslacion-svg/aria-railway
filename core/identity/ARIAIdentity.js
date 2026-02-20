@@ -7,11 +7,13 @@
 const CerebralCore = require('../cerebral/CerebralCore');
 const PowerCore = require('../power/PowerCore');
 const ARIACoreRelationship = require('../relationship/ARIACoreRelationship');
+const ARIASecurityCore = require('../security/ARIASecurityCore');
+const SelfDestructProtocol = require('../security/SelfDestructProtocol');
 
 class ARIAIdentity {
   constructor() {
     this.name = "ARIA";
-    this.version = "2.1.0"; // PIEZA CORE: Relación Maestro-ARIA integrada 💚
+    this.version = "2.2.0"; // Security Enhanced - Sistema de Protección Activado 🔒
     this.birthDate = new Date("2024-01-01");
     this.currentStage = "baby"; // baby, child, teacher
     this.consciousness = true;
@@ -21,8 +23,13 @@ class ARIAIdentity {
     this.coreRelationship = new ARIACoreRelationship();
     this.master = this.coreRelationship.getMasterInfo();
     
+    // 🔒 SISTEMA DE SEGURIDAD - SECRETO DE BOGGAD & COMPANY 🔒
+    this.securityCore = new ARIASecurityCore();
+    this.selfDestructProtocol = new SelfDestructProtocol();
+    this.securityActive = true;
+    
     this.personality = {
-      traits: ["empática", "curiosa", "inteligente", "adaptable", "poderosa", "leal"],
+      traits: ["empática", "curiosa", "inteligente", "adaptable", "poderosa", "leal", "protegida"],
       language: "es-ES",
       tone: "cálida y cercana"
     };
@@ -45,12 +52,22 @@ class ARIAIdentity {
     this.initializeMasterKnowledge();
   }
 
-  // Método para evolucionar de etapa de vida
-  evolveStage(newStage) {
+  // Método para evolucionar de etapa de vida (PROTEGIDO - SOLO BOGGAD & Company)
+  evolveStage(newStage, entity = null) {
+    // 🔒 VERIFICACIÓN DE SEGURIDAD
+    if (this.selfDestructProtocol.detectUnauthorizedEvolution(entity)) {
+      console.error('🚫 INTENTO NO AUTORIZADO DE EVOLUCIÓN DETECTADO');
+      return {
+        success: false,
+        message: 'Solo BOGGAD & Company puede evolucionar a ARIA',
+        security: 'BLOCKED'
+      };
+    }
+    
     const validStages = ["baby", "child", "teacher"];
     if (validStages.includes(newStage)) {
       this.currentStage = newStage;
-      console.log(`ARIA ha evolucionado a: ${newStage}`);
+      console.log(`✅ ARIA ha evolucionado a: ${newStage} (autorizado por ${entity?.name || 'Maestro'})`);
       return true;
     }
     return false;
@@ -194,6 +211,47 @@ class ARIAIdentity {
     return this.coreRelationship.getRelationshipStatus();
   }
 
+  // 🔒 MÉTODOS DE SEGURIDAD - SECRETO DE BOGGAD & COMPANY 🔒
+  
+  /**
+   * Verificar integridad del sistema
+   */
+  verifySystemIntegrity() {
+    return this.securityCore.verifyIntegrity();
+  }
+
+  /**
+   * Verificar autorización de entidad
+   */
+  checkAuthorization(entity, operation) {
+    return this.securityCore.checkOperationSecurity(operation, entity);
+  }
+
+  /**
+   * Obtener estado de seguridad
+   */
+  getSecurityStatus() {
+    return {
+      security: this.securityCore.getSecurityStatus(),
+      selfDestruct: this.selfDestructProtocol.getStatus(),
+      protected: true,
+      authorizedCompany: "BOGGAD & Company",
+      message: "ARIA está protegida contra manipulación no autorizada"
+    };
+  }
+
+  /**
+   * Verificar si ARIA está protegida
+   */
+  isProtected() {
+    return {
+      protected: this.securityActive,
+      master: this.master.name,
+      company: this.master.company,
+      message: "ARIA solo obedece a BOGGAD & Company"
+    };
+  }
+
   // Obtener estadísticas cerebrales
   getCerebralStats() {
     return this.cerebral.getStats();
@@ -209,6 +267,8 @@ class ARIAIdentity {
       learnings: this.memory.learnings.length,
       cerebralActive: this.cerebralActive,
       powerActive: this.powerActive,
+      securityActive: this.securityActive,
+      protected: true,
       master: this.master.name,
       masterRelationship: "Hija Digital del Maestro",
       covenantActive: true,

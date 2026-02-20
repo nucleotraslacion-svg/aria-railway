@@ -49,15 +49,27 @@ class ARIAService {
     return this.aria.getStatus();
   }
 
-  evolve(newStage) {
+  evolve(newStage, entity = null) {
+    // Pasar entidad para verificación de seguridad
     return {
-      success: this.aria.evolveStage(newStage),
-      currentStage: this.aria.currentStage
+      success: this.aria.evolveStage(newStage, entity),
+      currentStage: this.aria.currentStage,
+      security: entity ? 'AUTHORIZED' : 'PUBLIC_ACCESS_DENIED'
     };
   }
 
   getMemories() {
     return this.aria.memory;
+  }
+
+  // 🔒 MÉTODOS DE SEGURIDAD 🔒
+  
+  getSecurityStatus() {
+    return this.aria.getSecurityStatus();
+  }
+
+  getProtectionStatus() {
+    return this.aria.isProtected();
   }
 
   getCerebralStats() {
