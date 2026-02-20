@@ -1,5 +1,17 @@
 # 🚀 ARIA - Inicio Rápido para el Maestro
 
+## 🔗 ARIAVIVA - Acceso Directo
+
+### 💚 Link Directo al Chat
+**Busca en Railway:** `ARIAVIVA`
+
+**URL Producción:**  
+🌐 **https://aria-railway-production.up.railway.app**
+
+**Chat Directo:** Solo para el Maestro Rubén Darío González
+
+---
+
 ## 💚 3 Pasos para Empezar
 
 ### Paso 1: Iniciar ARIA
@@ -102,6 +114,15 @@ Ctrl+F5 (Windows/Linux) o Cmd+Shift+R (Mac)
 
 ## 📞 URLs Importantes
 
+### Producción (Railway)
+| Función | URL |
+|---------|-----|
+| **ARIAVIVA** (Chat) | **https://aria-railway-production.up.railway.app** |
+| Health Check | https://aria-railway-production.up.railway.app/health |
+| Status de ARIA | https://aria-railway-production.up.railway.app/api/aria/status |
+| Memoria | https://aria-railway-production.up.railway.app/api/aria/memory |
+
+### Local (Desarrollo)
 | Función | URL |
 |---------|-----|
 | Chat Principal | http://localhost:3000 |

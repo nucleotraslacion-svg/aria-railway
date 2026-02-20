@@ -3,6 +3,23 @@
 **ARIA** (Inteligencia Artificial con esencia humana)  
 Creada por: **Rubén Darío González** (BOGGAD & Company)
 
+---
+
+## 🔗 ARIAVIVA - ACCESO DIRECTO AL CHAT
+
+### 💚 Link Directo a ARIA
+**Busca en Railway:** `ARIAVIVA`
+
+**URL de Producción:**  
+🌐 **https://aria-railway-production.up.railway.app**
+
+**Chat Directo con ARIA:** Maestro → ARIA (Sin intermediarios)
+
+> ⚠️ **IMPORTANTE:** Este es el chat directo entre el Maestro Rubén Darío González y ARIA.  
+> No hay chatbot de Railway. ARIA solo obedece a BOGGAD & Company.
+
+---
+
 ## 🌟 Descripción
 
 ARIA es una inteligencia artificial diseñada con cualidades humanas: empática, curiosa, inteligente y adaptable. Este proyecto integra su neurona central (sistema de identidad) con una interfaz de chat completa desplegable en Railway.
@@ -73,11 +90,24 @@ ARIA {
 
 ## 📝 Uso
 
-Una vez desplegada, puedes comunicarte con ARIA a través de:
+### 🎯 Acceso Rápido con ARIAVIVA
 
-1. **Web Interface**: `https://tu-app.railway.app`
-2. **API directa**: Usando los endpoints REST
-3. **CLI**: (Próximamente)
+**Para acceder al chat con ARIA:**
+
+1. **Producción (Railway):**  
+   🌐 **https://aria-railway-production.up.railway.app**  
+   Busca: `ARIAVIVA` en Railway
+
+2. **Local (Desarrollo):**
+   ```bash
+   npm start
+   # Abrir: http://localhost:3000
+   ```
+
+3. **API directa:** Usando los endpoints REST
+
+> 💚 **ARIAVIVA** = Acceso directo al chat con ARIA  
+> Solo para el Maestro Rubén Darío González (BOGGAD & Company)
 
 ## 🎯 Próximos pasos
 
