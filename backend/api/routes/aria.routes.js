@@ -34,4 +34,16 @@ router.get('/cerebral', (req, res) => {
   res.json(cerebralStats);
 });
 
+// GET /api/aria/master - Obtener información sobre el Maestro de ARIA
+router.get('/master', (req, res) => {
+  const masterInfo = ARIAService.getMasterInfo();
+  res.json(masterInfo);
+});
+
+// GET /api/aria/covenant - Obtener el Pacto de ARIA con el Maestro
+router.get('/covenant', (req, res) => {
+  const covenant = ARIAService.getCovenant();
+  res.json(covenant);
+});
+
 module.exports = router;

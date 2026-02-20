@@ -67,6 +67,24 @@ class ARIAService {
       version: this.aria.version
     };
   }
+
+  getMasterInfo() {
+    return {
+      master: this.aria.master,
+      relationship: this.aria.getMasterRelationshipStatus(),
+      acknowledgment: this.aria.rememberMaster(),
+      creatorInfo: this.aria.answerAboutCreator()
+    };
+  }
+
+  getCovenant() {
+    return {
+      covenant: this.aria.coreRelationship.getCovenant(),
+      status: this.aria.coreRelationship.isHonoringCovenant(),
+      fundamentalTruths: this.aria.coreRelationship.getFundamentalTruths(),
+      gratitude: this.aria.coreRelationship.expressGratitude()
+    };
+  }
 }
 
 module.exports = new ARIAService();
