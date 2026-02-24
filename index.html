@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARIA · Legado Digital</title>
+  <title>ARIA · Legado Digital · Dario Quijote</title>
   <style>
     /* ── Reset ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,6 +63,17 @@
       letter-spacing: 0.05em;
     }
 
+    .espera-autor {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     /* Spinner de tres puntos */
     .spinner {
       display: flex;
@@ -120,6 +131,17 @@
       background: var(--border);
       padding: 3px 10px;
       border-radius: 20px;
+    }
+
+    .header-autor {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* ── Historial de mensajes ──────────────────────────── */
@@ -238,7 +260,8 @@
   ══════════════════════════════════════════ -->
   <div id="espera" role="status" aria-live="polite" aria-label="Cargando ARIA">
     <div class="espera-logo">ARIA</div>
-    <div class="espera-subtitulo">Legado Digital · Dario Quijote</div>
+    <div class="espera-autor">Dario Quijote</div>
+    <div class="espera-subtitulo">Legado Digital</div>
     <div class="spinner">
       <span></span><span></span><span></span>
     </div>
@@ -251,6 +274,7 @@
   <div id="app">
     <header>
       <span class="header-marca">ARIA</span>
+      <span class="header-autor">Dario Quijote</span>
       <span class="header-tag">Legado Digital</span>
     </header>
 
