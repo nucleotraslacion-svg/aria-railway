@@ -1,8 +1,30 @@
-# aria-railway
-ARIA interface chat con ia para legado digital
+# ARIA · Boggad Consulting Technologic
 
-## Autor
-**Dario Quijote**
+Interfaz de chat con IA para **Boggad Consulting Technologic**, plataforma de Boggad Company.
+
+ARIA es el agente de inteligencia tecnológica que opera en dos modos dentro de la misma sesión de chat:
+
+| Modo | Descripción |
+|---|---|
+| **⚡ Consulta** | ARIA responde consultas tecnológicas como experta en tecnologías, innovación y desarrollo de productos. |
+| **🎓 Maestro** | ARIA educa, guía y potencia las capacidades del usuario para que pueda cumplir su misión tecnológica. |
+
+## Integración de la API
+
+En `index.html`, localiza el bloque comentado en la función `enviar()` y reemplázalo con la llamada real al endpoint de ARIA:
+
+```js
+const res = await fetch('/api/aria', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ mensaje: texto, modo: modoActual }),
+});
+const data = await res.json();
+quitarEscribiendo();
+agregarMensaje(data.respuesta, 'aria');
+```
+
+El campo `modo` será `"consulta"` o `"maestro"` según la pestaña activa.
 
 ## Plantillas disponibles
 
