@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARIA · Legado Digital</title>
+  <style>
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0f14;
+      --surface:  #161b27;
+      --border:   #252d40;
+      --accent:   #4f8cff;
+      --accent2:  #a78bfa;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --user-bg:  #1e3a5f;
+      --aria-bg:  #1a2236;
+      --radius:   14px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ── Pantalla de espera ─────────────────────────────── */
+    #espera {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #espera.ocultar {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .espera-logo {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .espera-subtitulo {
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Spinner de tres puntos */
+    .spinner {
+      display: flex;
+      gap: 10px;
+    }
+    .spinner span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulso 1.2s ease-in-out infinite;
+    }
+    .spinner span:nth-child(2) { animation-delay: 0.2s; background: var(--accent2); }
+    .spinner span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulso {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40%            { transform: scale(1);   opacity: 1;   }
+    }
+
+    .espera-estado {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Layout principal ───────────────────────────────── */
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .header-marca {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.1em;
+    }
+    .header-tag {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: var(--border);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    /* ── Historial de mensajes ──────────────────────────── */
+    #mensajes {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+    #mensajes::-webkit-scrollbar { width: 6px; }
+    #mensajes::-webkit-scrollbar-track { background: transparent; }
+    #mensajes::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .burbuja {
+      max-width: 72%;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .burbuja.usuario {
+      align-self: flex-end;
+      background: var(--user-bg);
+      border-bottom-right-radius: 4px;
+    }
+    .burbuja.aria {
+      align-self: flex-start;
+      background: var(--aria-bg);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+    .burbuja .remitente {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 5px;
+      color: var(--muted);
+    }
+    .burbuja.aria .remitente { color: var(--accent); }
+    .burbuja.usuario .remitente { color: var(--accent2); }
+
+    /* Indicador de escritura */
+    .escribiendo .punto {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--muted);
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: pulso 1.2s ease-in-out infinite;
+    }
+    .escribiendo .punto:nth-child(2) { animation-delay: 0.2s; }
+    .escribiendo .punto:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ── Entrada de texto ───────────────────────────────── */
+    #entrada-zona {
+      flex-shrink: 0;
+      padding: 14px 16px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    #entrada {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      resize: none;
+      max-height: 120px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    #entrada:focus { border-color: var(--accent); }
+    #entrada::placeholder { color: var(--muted); }
+
+    #btn-enviar {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #fff;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      align-self: flex-end;
+    }
+    #btn-enviar:hover  { opacity: 0.85; }
+    #btn-enviar:active { opacity: 0.7; }
+
+    footer {
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--muted);
+      padding: 6px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA DE ESPERA
+  ══════════════════════════════════════════ -->
+  <div id="espera" role="status" aria-live="polite" aria-label="Cargando ARIA">
+    <div class="espera-logo">ARIA</div>
+    <div class="espera-subtitulo">Legado Digital · Dario Quijote</div>
+    <div class="spinner">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="espera-estado" id="espera-estado">Iniciando sistema…</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       INTERFAZ PRINCIPAL
+  ══════════════════════════════════════════ -->
+  <div id="app">
+    <header>
+      <span class="header-marca">ARIA</span>
+      <span class="header-tag">Legado Digital</span>
+    </header>
+
+    <div id="mensajes" role="log" aria-label="Historial de conversación">
+      <!-- Los mensajes se insertan aquí -->
+    </div>
+
+    <div id="entrada-zona">
+      <textarea
+        id="entrada"
+        rows="1"
+        placeholder="Escribe tu mensaje…"
+        aria-label="Mensaje para ARIA"
+      ></textarea>
+      <button id="btn-enviar" aria-label="Enviar mensaje">&#9658;</button>
+    </div>
+
+    <footer>ARIA · Legado Digital &mdash; Dario Quijote</footer>
+  </div>
+
+  <script>
+    /* ── Pantalla de espera ─────────────────────────────── */
+    const espera       = document.getElementById('espera');
+    const esperaEstado = document.getElementById('espera-estado');
+
+    const fases = [
+      'Iniciando sistema…',
+      'Cargando módulos de legado digital…',
+      'Conectando con ARIA…',
+      'Listo.',
+    ];
+
+    let fase = 0;
+    const intervalo = setInterval(() => {
+      fase++;
+      if (fase < fases.length) {
+        esperaEstado.textContent = fases[fase];
+      } else {
+        clearInterval(intervalo);
+        espera.classList.add('ocultar');
+        espera.addEventListener('transitionend', () => espera.remove(), { once: true });
+        mostrarBienvenida();
+      }
+    }, 700);
+
+    /* ── Chat ───────────────────────────────────────────── */
+    const contenedor = document.getElementById('mensajes');
+    const entrada    = document.getElementById('entrada');
+    const btnEnviar  = document.getElementById('btn-enviar');
+
+    function agregarMensaje(texto, rol) {
+      const burbuja = document.createElement('div');
+      burbuja.className = `burbuja ${rol}`;
+      const remitente = document.createElement('div');
+      remitente.className = 'remitente';
+      remitente.textContent = rol === 'aria' ? 'ARIA' : 'Tú';
+      const cuerpo = document.createElement('div');
+      cuerpo.textContent = texto;
+      burbuja.appendChild(remitente);
+      burbuja.appendChild(cuerpo);
+      contenedor.appendChild(burbuja);
+      contenedor.scrollTop = contenedor.scrollHeight;
+      return burbuja;
+    }
+
+    function mostrarEscribiendo() {
+      const burbuja = document.createElement('div');
+      burbuja.className = 'burbuja aria escribiendo';
+      burbuja.id = 'escribiendo';
+      burbuja.innerHTML = `<div class="remitente">ARIA</div>
+        <span class="punto"></span><span class="punto"></span><span class="punto"></span>`;
+      contenedor.appendChild(burbuja);
+      contenedor.scrollTop = contenedor.scrollHeight;
+    }
+
+    function quitarEscribiendo() {
+      const el = document.getElementById('escribiendo');
+      if (el) el.remove();
+    }
+
+    function mostrarBienvenida() {
+      setTimeout(() => {
+        agregarMensaje(
+          '¡Hola! Soy ARIA, tu asistente de legado digital. ¿En qué puedo ayudarte hoy?',
+          'aria'
+        );
+      }, 300);
+    }
+
+    async function enviar() {
+      const texto = entrada.value.trim();
+      if (!texto) return;
+      entrada.value = '';
+      entrada.style.height = '';
+      agregarMensaje(texto, 'usuario');
+      mostrarEscribiendo();
+
+      /* Respuesta de demostración — reemplaza con llamada real a la API */
+      await new Promise(r => setTimeout(r, 1200));
+      quitarEscribiendo();
+      agregarMensaje(
+        'He recibido tu mensaje. (Aquí irá la respuesta de la IA de legado digital.)',
+        'aria'
+      );
+    }
+
+    btnEnviar.addEventListener('click', enviar);
+
+    entrada.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        enviar();
+      }
+    });
+
+    /* Auto-redimensionar textarea */
+    entrada.addEventListener('input', () => {
+      entrada.style.height = '';
+      entrada.style.height = Math.min(entrada.scrollHeight, 120) + 'px';
+    });
+  </script>
+</body>
+</html>
