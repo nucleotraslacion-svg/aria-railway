@@ -1,0 +1,11 @@
+{
+  "name": "boggad-aria",
+  "version": "1.0.0",
+  "description": "ARIA · Boggad Consulting Technologic – chat interface",
+  "scripts": {
+    "start": "serve . --listen $PORT --single"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
