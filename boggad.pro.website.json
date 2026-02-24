@@ -1,0 +1,25 @@
+{
+  "providerId": "boggad.pro",
+  "providerName": "Boggad",
+  "serviceId": "website",
+  "serviceName": "Boggad Website",
+  "version": 1,
+  "syncPubKeyDomain": "boggad.pro",
+  "logoUrl": "https://boggad.pro/logo.png",
+  "description": "Connects a domain to the Boggad Company website",
+  "variableDescription": "ipv4 is the IP address of the Boggad web server",
+  "records": [
+    {
+      "type": "A",
+      "host": "@",
+      "pointsTo": "%ipv4%",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "host": "www",
+      "pointsTo": "@",
+      "ttl": 3600
+    }
+  ]
+}
